@@ -2,19 +2,17 @@
 pragma solidity ^0.8.13;
 
 contract LiquidityPool {
-    string name;
-    uint256 fiatPool;
-    address usdc;
-    address remittanceController;
+    string public name;
+    uint256 public fiatPool;
+    address public usdc;
+    address public remittanceController;
 
     constructor(
         string memory _name,
-        address _usdc,
-        address _remittanceController
+        address _usdc
     ) {
         name = _name;
         usdc = _usdc;
-        remittanceController = _remittanceController;
     }
 
     function transferToLP(
@@ -30,7 +28,6 @@ contract LiquidityPool {
         fiatPool += _amount;
 
         //@todo add transfer
-        
     }
 
     function receivedTokens(uint256 _amount, bytes32 _transferalHash) public {
@@ -44,4 +41,10 @@ contract LiquidityPool {
     }
 
     //@todo Add Equilization
+
+    function setController(address _controller) public {
+        //@todo add AccessControl
+        //@todo add Security Checks
+        remittanceController = _controller;
+    }
 }
