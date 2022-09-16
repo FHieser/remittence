@@ -30,17 +30,17 @@ contract LiquidityPool {
         fiatPool += _amount;
 
         //@todo add transfer
-        LiquidityPool(_targetLP).emitReceive(_amount, _transferalHash);//@audit Probably in Controller
+        
     }
 
-    function emitReceive(uint256 _amount, bytes32 _transferalHash) public {
+    function receivedTokens(uint256 _amount, bytes32 _transferalHash) public {
         //@todo add AccessControl
         //@todo add Security Checks
 
         //Update the Current Fiat Equivalent, that should be in the Fiat-Pool
         fiatPool -= _amount;
 
-        //@todo emit Event
+        //@todo add event with hash
     }
 
     //@todo Add Equilization
