@@ -29,4 +29,6 @@ contract RemittanceController {
         LiquidityPool(euroPool).transferToLP(usdPool, _amount, _transferalHash);
         LiquidityPool(euroPool).receivedTokens(_amount, _transferalHash);
     }
+
+    //@todo Equilization Trigger for Liquidity Pools
 }
