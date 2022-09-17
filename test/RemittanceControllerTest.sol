@@ -33,27 +33,7 @@ contract RemittanceControllerTest is Test {
         usdPool.setController(address(controller));
     }
 
-    function testTransferToLP(uint256 _funds, uint256 _amount) public {
-        vm.assume(_funds >= _amount);
-        vm.assume(_amount > 0);
-
-        usdc.mintTo(address(usdPool), _funds);
-
-        vm.expectEmit(true, true, true, true);
-        emit transfer(address(euroPool), _amount, bytes32(""));
-        vm.expectEmit(true, true, true, true);
-        emit receiveCoin(_amount, bytes32(""));
-
-        controller.triggerTransferUSDtoEuro(_amount, bytes32(""));
-
-        assertTrue(
-            usdc.balanceOf(address(euroPool)) == _amount,
-            "Balance of pool does not equal amount"
-        );
+    function test() public {
+        
     }
-    
-
-    //@todo transferal Test
-
-    //@todo Equalization Test
 }
