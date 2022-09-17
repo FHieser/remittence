@@ -5,7 +5,7 @@ import {IERC20} from "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.so
 
 contract LiquidityPool {
     string public name;
-    uint256 public fiatPool;
+    uint256 public fiatBalance;
     address public usdc;
     address public remittanceController;
 
@@ -27,7 +27,7 @@ contract LiquidityPool {
         //@todo add Security Checks
 
         //Update the Current Fiat Equivalent, that should be in the Fiat-Pool
-        fiatPool += _amount;
+        fiatBalance += _amount;
 
         IERC20(usdc).transfer(_targetLP, _amount);
 
@@ -39,7 +39,7 @@ contract LiquidityPool {
         //@todo add Security Checks
 
         //Update the Current Fiat Equivalent, that should be in the Fiat-Pool
-        fiatPool -= _amount;
+        fiatBalance -= _amount;
 
         emit receiveCoin(_amount, _transferalHash);
     }
