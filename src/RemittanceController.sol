@@ -18,7 +18,7 @@ contract RemittanceController {
         //@todo add AccessControl
         //@todo add Security Checks
         LiquidityPool(usdPool).transferToLP(euroPool, _amount, _transferalHash);
-        LiquidityPool(usdPool).receivedTokens(_amount, _transferalHash);
+        LiquidityPool(euroPool).receivedTokens(_amount, _transferalHash);
     }
 
     function triggerTransferEurotoUSD(uint256 _amount, bytes32 _transferalHash)
@@ -27,7 +27,7 @@ contract RemittanceController {
         //@todo add AccessControl
         //@todo add Security Checks
         LiquidityPool(euroPool).transferToLP(usdPool, _amount, _transferalHash);
-        LiquidityPool(euroPool).receivedTokens(_amount, _transferalHash);
+        LiquidityPool(usdPool).receivedTokens(_amount, _transferalHash);
     }
 
     //@todo Equilization Trigger for Liquidity Pools
