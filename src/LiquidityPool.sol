@@ -28,6 +28,7 @@ contract LiquidityPool {
 
     //--------------------------------------------------------------------------
 
+    /// @dev Modifier that checks if Equalization is needed and if so triggers it
     modifier potentialEuqalization() {
         _;
         uint256 cryptoBalance = IERC20(usdc).balanceOf(address(this));
@@ -52,6 +53,7 @@ contract LiquidityPool {
 
     //--------------------------------------------------------------------------
 
+    /// @dev Transfers the underlying Token from this Liquidity Pool to the target cross-border Pool
     function transferToLP(
         address _targetLP,
         uint256 _amount,
@@ -68,6 +70,7 @@ contract LiquidityPool {
         emit transfer(_targetLP, _amount, _transferalHash);
     }
 
+    /// @dev A hook that should be triggered, when the Pool receives Tokens
     function receivedTokens(uint256 _amount, bytes32 _transferalHash)
         public
         potentialEuqalization
@@ -81,6 +84,7 @@ contract LiquidityPool {
         emit receiveCoin(_amount, _transferalHash);
     }
 
+    //@dev Equalizes the Fiat and the Crypto Side of the Pool via Events
     function equalize(
         uint256 cryptoBalance,
         uint256 fiatBalance,
@@ -107,16 +111,18 @@ contract LiquidityPool {
         }
     }
 
+    /// @dev returns the ideal balance between the crypto and the fiat side of the pool 
     function idealBalance(uint256 cryptoBalance, uint256 fiatBalance)
         public
         pure
         returns (uint256 _balance)
     {
-        return (cryptoBalance + fiatBalance) / 2; //@note this can be optimised by for ex or import markets by shifting the right balance to the right or left
+        return (cryptoBalance + fiatBalance) / 2; //@note this can be optimised for ex or import markets by shifting the right balance to the right or left
     }
 
     //--------------------------------------------------------------------------
 
+    /// @dev sets the Controller of the  
     function setController(address _controller) public {
         //@todo add AccessControl
         //@todo add Security Checks
@@ -125,6 +131,9 @@ contract LiquidityPool {
 
     //--------------------------------------------------------------------------
 
+    /// @dev Returns the absulute value of a int
+    /// @param x: Int Value that is converted to absolute uint
+    /// @returns: Uint Value that was converted to absolute from initial int
     function abs(int256 x) private pure returns (uint256) {
         return x >= 0 ? uint256(x) : uint256(-x);
     }
