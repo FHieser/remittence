@@ -30,9 +30,8 @@ contract LiquidityPoolTest is Test {
         secondPool.setController(address(this));
     }
 
-    
     function testTransferToLP(uint256 _funds, uint256 _amount) public {
-        vm.assume(_funds<2**128);//Asserts that Uint is in relevant Area
+        vm.assume(_funds < 2**128); //Asserts that Uint is in relevant Area
 
         vm.assume(_funds >= _amount);
         vm.assume(_amount > 0);
@@ -52,7 +51,7 @@ contract LiquidityPoolTest is Test {
     function testReceivedTokens(uint256 _initialFiatFunds, uint256 _amount)
         public
     {
-        vm.assume(_initialFiatFunds<2**128);//Asserts that Uint is in relevant Area
+        vm.assume(_initialFiatFunds < 2**128); //Asserts that Uint is in relevant Area
 
         vm.assume(_initialFiatFunds >= _amount);
         vm.assume(_amount > 0);
@@ -72,8 +71,8 @@ contract LiquidityPoolTest is Test {
         uint256 _initialCryptoFunds,
         uint256 _amount
     ) public {
-        vm.assume(_initialFiatFunds<2**128);//Asserts that Uint is in relevant Area
-        vm.assume(_initialCryptoFunds<2**128);//Asserts that Uint is in relevant Area
+        vm.assume(_initialFiatFunds < 2**128); //Asserts that Uint is in relevant Area
+        vm.assume(_initialCryptoFunds < 2**128); //Asserts that Uint is in relevant Area
         vm.assume(_initialFiatFunds >= _amount);
         vm.assume(_initialCryptoFunds >= _amount);
         vm.assume(_amount > 0);
@@ -89,11 +88,45 @@ contract LiquidityPoolTest is Test {
             vm.expectEmit(true, true, true, true);
             emit transfer(address(secondPool), _amount, bytes32(""));
         }
-        
+
         firstPool.transferToLP(address(secondPool), _amount, bytes32(""));
 
-        if(exceedEqualizedAmount){
-            assertTrue(usdc.balanceOf(address(firstPool))== firstPool.fiatBalance());
+        if (exceedEqualizedAmount) {
+            assertTrue(
+                usdc.balanceOf(address(firstPool)) == firstPool.fiatBalance()
+            );
+        }
+    }
+
+    function testEqualizationViaReceivedTokens(
+        uint256 _initialFiatFunds,
+        uint256 _initialCryptoFunds,
+        uint256 _amount
+    ) public {
+        vm.assume(_initialFiatFunds < 2**128); //Asserts that Uint is in relevant Area
+        vm.assume(_initialCryptoFunds < 2**128); //Asserts that Uint is in relevant Area
+        vm.assume(_initialFiatFunds >= _amount);
+        vm.assume(_initialCryptoFunds >= _amount);
+        vm.assume(_amount > 0);
+
+        usdc.mintTo(address(firstPool), _initialCryptoFunds);
+        firstPool.setFiatBalance(_initialFiatFunds);
+
+        bool exceedEqualizedAmount = (_amount *
+            (firstPool.re_equalizeAmount() + 100)) /
+            100 >=
+            (_initialFiatFunds + _amount);
+        if (exceedEqualizedAmount) {
+            vm.expectEmit(true, true, true, true);
+            emit transfer(address(secondPool), _amount, bytes32(""));
+        }
+
+        firstPool.receivedTokens(_amount, bytes32(""));
+
+        if (exceedEqualizedAmount) {
+            assertTrue(
+                usdc.balanceOf(address(firstPool)) == firstPool.fiatBalance()
+            );
         }
     }
 }
