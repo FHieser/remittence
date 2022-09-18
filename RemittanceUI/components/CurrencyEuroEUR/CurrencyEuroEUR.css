@@ -1,0 +1,17 @@
+.currency-euro-eur {
+  align-items: flex-end;
+  align-self: flex-end;
+  border: 1px none;
+  display: flex;
+  height: 37px;
+  margin-bottom: 6.6px;
+  margin-left: 121px;
+  padding: 6.7px 6.2px;
+  width: 37px;
+}
+
+.euro {
+  height: 24px;
+  width: 22px;
+}
+

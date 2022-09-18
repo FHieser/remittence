@@ -1,0 +1,14 @@
+.currency-dollar-usd {
+  align-items: center;
+  border: 1px none;
+  display: flex;
+  height: 37px;
+  padding: 0 9.8px;
+  width: 37px;
+}
+
+.dollar {
+  height: 28px;
+  width: 17px;
+}
+
